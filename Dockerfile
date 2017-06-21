@@ -1,5 +1,7 @@
 FROM ubuntu:14.04
 
+MAINTAINER adam.cofer@skuid.com
+
 # Dependencies we need for building phantomjs
 ENV buildDependencies\
   wget unzip python build-essential g++ flex bison gperf\
@@ -59,7 +61,7 @@ echo 'deb http://br.archive.ubuntu.com/ubuntu/ trusty multiverse' >> /etc/apt/so
 && cd / \
 && rm -rf dockerized-phantomjs \
     # Removing build dependencies, clean temporary files
-&&  apt-get purge -yqq ${buildDependencies} ${phantomJSDependencies} ${dockerizeDependencies} \
+&&  apt-get purge -yqq ${buildDependencies} ${dockerizeDependencies} \
 &&  apt-get autoremove -yqq \
 &&  apt-get clean \
 &&  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -67,7 +69,7 @@ echo 'deb http://br.archive.ubuntu.com/ubuntu/ trusty multiverse' >> /etc/apt/so
 
 CMD \
     echo "phantomjs binary is located at /phantomjs/bin/phantomjs"\
-&&  echo "just run 'phantomjs' (version `phantomjs -v`)"\
+&&  echo "just run 'phantomjs'"\
 &&  echo "dockerized phantomjs is at /dockerized-phantomjs.tar.gz"\
-&&  echo "docker run --name temp <image> && docker cp temp:/dockerized-phantomjs.tar.gz ./"\
+&&  echo "docker run --name temp quay.io/skuid/phantomjs-dockerizer && docker cp temp:/dockerized-phantomjs.tar.gz ./"\
 &&  echo "  - that tar file should be untarred into root dir with 'tar -xzvf dockerized-phantomjs.tar.gz -C /'"
